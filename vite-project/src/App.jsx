@@ -28,7 +28,7 @@ import {
 
 const images = {
   hero:
-    "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=2200&q=90",
+    "https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=2200&q=90",
 
   privateJet:
     "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=85",
@@ -65,6 +65,7 @@ const reveal = {
 
 const heroContainer = {
   hidden: {},
+
   visible: {
     transition: {
       staggerChildren: 0.15,
@@ -110,6 +111,7 @@ function Navbar() {
         <div className="glass rounded-full border border-white/10 px-3 py-2 shadow-2xl shadow-black/10">
           <div className="flex h-14 items-center justify-between">
             {/* Logo */}
+
             <a
               href="#"
               className="flex items-center gap-2.5 pl-2"
@@ -126,6 +128,7 @@ function Navbar() {
             </a>
 
             {/* Desktop navigation */}
+
             <nav className="hidden items-center rounded-full bg-[var(--nav-bg)] px-2 py-1.5 lg:flex">
               {navItems.map((item) => (
                 <div key={item.name} className="relative">
@@ -155,9 +158,24 @@ function Navbar() {
                     <AnimatePresence>
                       {experienceOpen && (
                         <motion.div
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 8 }}
+                          initial={{
+                            opacity: 0,
+                            y: 8,
+                            scale: 0.96,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                          }}
+                          exit={{
+                            opacity: 0,
+                            y: 8,
+                            scale: 0.96,
+                          }}
+                          transition={{
+                            duration: 0.2,
+                          }}
                           className="absolute left-1/2 top-[calc(100%+12px)] w-56 -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#172b28] p-2 shadow-2xl"
                         >
                           {[
@@ -183,10 +201,11 @@ function Navbar() {
             </nav>
 
             {/* Desktop CTA */}
+
             <div className="hidden lg:block">
               <a
                 href="#contact"
-                className="white-button inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-[#17302b]"
+                className="white-button inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-medium text-[var(--bg)] transition duration-300 hover:scale-[1.03] hover:brightness-105"
               >
                 Book Your Trip
                 <ArrowUpRight size={16} />
@@ -194,46 +213,137 @@ function Navbar() {
             </div>
 
             {/* Mobile button */}
-            <button
+
+            <motion.button
               type="button"
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="mr-1 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white lg:hidden"
+              whileTap={{ scale: 0.92 }}
+              className={`mr-1 flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 lg:hidden ${
+                mobileOpen
+                  ? "bg-[var(--accent)] text-[var(--bg)] shadow-[0_0_25px_rgba(234,251,123,0.18)]"
+                  : "bg-white/10 text-white"
+              }`}
               aria-label="Toggle navigation"
               aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <X size={21} /> : <Menu size={21} />}
-            </button>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={mobileOpen ? "close" : "menu"}
+                  initial={{
+                    opacity: 0,
+                    rotate: -45,
+                    scale: 0.7,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    rotate: 0,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    rotate: 45,
+                    scale: 0.7,
+                  }}
+                  transition={{
+                    duration: 0.18,
+                  }}
+                  className="flex items-center justify-center"
+                >
+                  {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+                </motion.span>
+              </AnimatePresence>
+            </motion.button>
           </div>
 
           {/* Mobile menu */}
+
           <AnimatePresence>
             {mobileOpen && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
+                initial={{
+                  opacity: 0,
+                  height: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                  height: "auto",
+                }}
+                exit={{
+                  opacity: 0,
+                  height: 0,
+                }}
+                transition={{
+                  duration: 0.35,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="overflow-hidden lg:hidden"
               >
-                <nav className="flex flex-col gap-1 px-2 pb-3 pt-2">
-                  {navItems.map((item) => (
-                    <a
+                <motion.nav
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="flex flex-col gap-1 px-2 pb-3 pt-3"
+                >
+                  {navItems.map((item, index) => (
+                    <motion.a
                       key={item.name}
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
-                      className="rounded-xl px-4 py-3 text-sm text-[var(--muted)] transition hover:bg-white/5 hover:text-white"
+                      initial={{
+                        opacity: 0,
+                        x: -12,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                      }}
+                      transition={{
+                        delay: 0.05 + index * 0.045,
+                        duration: 0.25,
+                        ease: "easeOut",
+                      }}
+                      whileTap={{
+                        scale: 0.98,
+                      }}
+                      className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-sm text-[var(--muted)] transition-all duration-300 hover:bg-white/5 hover:pl-5 hover:text-white"
                     >
-                      {item.name}
-                    </a>
+                      <span>{item.name}</span>
+
+                      {item.dropdown && (
+                        <ChevronDown
+                          size={15}
+                          className="text-white/40 transition-transform duration-300 group-hover:translate-y-0.5"
+                        />
+                      )}
+                    </motion.a>
                   ))}
 
-                  <a
+                  {/* Mobile Book Button */}
+
+                  <motion.a
                     href="#contact"
                     onClick={() => setMobileOpen(false)}
-                    className="mt-2 rounded-xl bg-[var(--accent)] px-4 py-3 text-center text-sm font-medium text-[var(--bg)]"
+                    initial={{
+                      opacity: 0,
+                      y: 10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      delay: 0.3,
+                      duration: 0.3,
+                    }}
+                    whileTap={{
+                      scale: 0.98,
+                    }}
+                    className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-3.5 text-center text-sm font-medium text-[var(--bg)] shadow-[0_0_25px_rgba(234,251,123,0.10)] transition-all duration-300 hover:brightness-105"
                   >
                     Book Your Trip
-                  </a>
-                </nav>
+                    <ArrowUpRight size={16} />
+                  </motion.a>
+                </motion.nav>
               </motion.div>
             )}
           </AnimatePresence>
@@ -256,9 +366,8 @@ function Hero() {
         animate="visible"
         className="relative mx-auto flex min-h-[760px] max-w-[1450px] items-center justify-center overflow-hidden rounded-[28px]"
       >
-        {/* HERO IMAGE
-            Replace this image with a <video> if needed.
-        */}
+        {/* HERO IMAGE */}
+
         <img
           src={images.hero}
           alt="Private aircraft flying above clouds"
@@ -284,9 +393,7 @@ function Hero() {
             className="font-heading text-[clamp(3rem,7vw,6.8rem)] font-light leading-[0.95] tracking-[-0.04em] text-[var(--text)]"
           >
             The{" "}
-            <span className="text-[var(--accent)]">
-              Exceptional
-            </span>{" "}
+            <span className="text-[var(--accent)]">Exceptional</span>{" "}
             Way
             <br />
             to Travel.
@@ -323,9 +430,11 @@ function Hero() {
         </div>
 
         {/* Hero bottom information */}
+
         <div className="absolute bottom-6 left-6 right-6 z-10 hidden items-center justify-between md:flex">
           <div className="flex items-center gap-3 rounded-full border border-white/10 bg-black/20 px-4 py-2.5 backdrop-blur-md">
             <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+
             <span className="text-xs text-white/75">
               Available Worldwide
             </span>
@@ -478,6 +587,7 @@ function FeatureCard({ feature, index }) {
           }`}
         >
           {/* Content */}
+
           <div className="flex flex-col justify-center p-8 md:p-14 lg:p-20 md:[direction:ltr]">
             <div className="flex items-center justify-between">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#3E5450] text-sm text-white">
@@ -516,6 +626,7 @@ function FeatureCard({ feature, index }) {
           </div>
 
           {/* Image */}
+
           <div className="min-h-[350px] p-3 md:min-h-full md:[direction:ltr]">
             <div className="h-full min-h-[340px] overflow-hidden rounded-[18px]">
               <img
@@ -581,6 +692,7 @@ const steps = [
     description:
       "Share your destination, preferred timing and what matters most to you.",
   },
+
   {
     number: "2",
     icon: Route,
@@ -588,6 +700,7 @@ const steps = [
     description:
       "Our aviation specialists match the right aircraft and route to your needs.",
   },
+
   {
     number: "3",
     icon: Plane,
@@ -595,6 +708,7 @@ const steps = [
     description:
       "Arrive at your private terminal and leave the logistics to our team.",
   },
+
   {
     number: "4",
     icon: Globe2,
@@ -632,6 +746,7 @@ function HowItWorks() {
         </motion.div>
 
         {/* Flight path */}
+
         <div className="pointer-events-none absolute left-[5%] right-[5%] top-[51%] hidden lg:block">
           <svg
             viewBox="0 0 1200 160"
@@ -730,6 +845,7 @@ function Comparison() {
 
         <div className="overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)]">
           {/* Header */}
+
           <div className="grid grid-cols-[1fr_1fr_1fr] border-b border-white/10">
             <div className="p-5 text-sm text-[var(--muted)] md:p-7">
               Experience
@@ -745,11 +861,14 @@ function Comparison() {
           </div>
 
           {/* Rows */}
+
           {rows.map((row, index) => (
             <div
               key={row[0]}
               className={`grid grid-cols-[1fr_1fr_1fr] ${
-                index !== rows.length - 1 ? "border-b border-white/10" : ""
+                index !== rows.length - 1
+                  ? "border-b border-white/10"
+                  : ""
               }`}
             >
               <div className="p-5 text-xs text-[var(--text)] md:p-7 md:text-sm">
@@ -765,6 +884,7 @@ function Comparison() {
                   size={16}
                   className="shrink-0 text-[var(--accent)]"
                 />
+
                 {row[2]}
               </div>
             </div>
@@ -786,11 +906,13 @@ function Benefits() {
       title: "Your time matters.",
       text: "Reduce airport waiting and spend more time where it matters.",
     },
+
     {
       icon: ShieldCheck,
       title: "Private by nature.",
       text: "Your aircraft, your people and your space from departure to arrival.",
     },
+
     {
       icon: Zap,
       title: "Move without limits.",
@@ -850,9 +972,8 @@ function Testimonial() {
         viewport={{ once: true }}
         className="mx-auto grid max-w-7xl overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:grid-cols-2"
       >
-        {/* Video placeholder
-            Replace with your actual testimonial video.
-        */}
+        {/* Video placeholder */}
+
         <div className="relative min-h-[400px] overflow-hidden">
           <img
             src={images.destination}
@@ -921,7 +1042,9 @@ function Stats() {
           <div
             key={number}
             className={`px-6 py-12 text-center ${
-              index !== 0 ? "border-t border-white/10 md:border-l md:border-t-0" : ""
+              index !== 0
+                ? "border-t border-white/10 md:border-l md:border-t-0"
+                : ""
             }`}
           >
             <p className="font-heading text-4xl font-light text-[var(--accent)]">
@@ -953,7 +1076,9 @@ function CTA() {
         className="relative mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-[var(--accent)] px-7 py-16 text-center md:px-12 md:py-24"
       >
         {/* Decorative circles */}
+
         <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full border border-[#0F2421]/10" />
+
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-72 w-72 rounded-full border border-[#0F2421]/10" />
 
         <span className="relative text-xs font-medium tracking-[0.2em] text-[#39504a] uppercase">
@@ -1044,13 +1169,25 @@ function Footer() {
       title: "Explore",
       links: ["About", "Destinations", "Experiences", "How It Works"],
     },
+
     {
       title: "Services",
-      links: ["Private Charters", "Corporate Travel", "Group Travel", "Special Requests"],
+      links: [
+        "Private Charters",
+        "Corporate Travel",
+        "Group Travel",
+        "Special Requests",
+      ],
     },
+
     {
       title: "Connect",
-      links: ["Instagram", "LinkedIn", "Contact", "Request a Quote"],
+      links: [
+        "Instagram",
+        "LinkedIn",
+        "Contact",
+        "Request a Quote",
+      ],
     },
   ];
 
@@ -1059,6 +1196,7 @@ function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           {/* Brand */}
+
           <div>
             <a href="#" className="flex items-center gap-2.5">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)]">
