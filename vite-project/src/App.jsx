@@ -108,8 +108,20 @@ function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-6">
       <div className="mx-auto max-w-[1450px]">
-        <div className="glass rounded-full border border-white/10 px-3 py-2 shadow-2xl shadow-black/10">
+
+        {/* =================================================
+            NAVBAR CONTAINER
+        ================================================= */}
+
+        <div
+          className={`glass border border-white/10 px-3 py-2 shadow-2xl shadow-black/10 transition-all duration-300 ${
+            mobileOpen
+              ? "rounded-[28px]"
+              : "rounded-full"
+          }`}
+        >
           <div className="flex h-14 items-center justify-between">
+
             {/* Logo */}
 
             <a
@@ -127,11 +139,14 @@ function Navbar() {
               </span>
             </a>
 
-            {/* Desktop navigation */}
+            {/* =================================================
+                DESKTOP NAVIGATION
+            ================================================= */}
 
             <nav className="hidden items-center rounded-full bg-[var(--nav-bg)] px-2 py-1.5 lg:flex">
               {navItems.map((item) => (
                 <div key={item.name} className="relative">
+
                   <a
                     href={item.href}
                     onClick={(e) => {
@@ -187,7 +202,9 @@ function Navbar() {
                               key={experience}
                               href="#experiences"
                               className="block rounded-xl px-4 py-3 text-sm text-[var(--muted)] transition hover:bg-white/5 hover:text-white"
-                              onClick={() => setExperienceOpen(false)}
+                              onClick={() =>
+                                setExperienceOpen(false)
+                              }
                             >
                               {experience}
                             </a>
@@ -200,7 +217,9 @@ function Navbar() {
               ))}
             </nav>
 
-            {/* Desktop CTA */}
+            {/* =================================================
+                DESKTOP CTA
+            ================================================= */}
 
             <div className="hidden lg:block">
               <a
@@ -212,7 +231,9 @@ function Navbar() {
               </a>
             </div>
 
-            {/* Mobile button */}
+            {/* =================================================
+                MOBILE MENU BUTTON
+            ================================================= */}
 
             <motion.button
               type="button"
@@ -226,7 +247,10 @@ function Navbar() {
               aria-label="Toggle navigation"
               aria-expanded={mobileOpen}
             >
-              <AnimatePresence mode="wait" initial={false}>
+              <AnimatePresence
+                mode="wait"
+                initial={false}
+              >
                 <motion.span
                   key={mobileOpen ? "close" : "menu"}
                   initial={{
@@ -249,28 +273,37 @@ function Navbar() {
                   }}
                   className="flex items-center justify-center"
                 >
-                  {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+                  {mobileOpen ? (
+                    <X size={21} />
+                  ) : (
+                    <Menu size={21} />
+                  )}
                 </motion.span>
               </AnimatePresence>
             </motion.button>
           </div>
 
-          {/* Mobile menu */}
+          {/* =================================================
+              MOBILE NAVIGATION BOX
+          ================================================= */}
 
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {mobileOpen && (
               <motion.div
                 initial={{
                   opacity: 0,
                   height: 0,
+                  y: -8,
                 }}
                 animate={{
                   opacity: 1,
                   height: "auto",
+                  y: 0,
                 }}
                 exit={{
                   opacity: 0,
                   height: 0,
+                  y: -8,
                 }}
                 transition={{
                   duration: 0.35,
@@ -278,72 +311,81 @@ function Navbar() {
                 }}
                 className="overflow-hidden lg:hidden"
               >
-                <motion.nav
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  className="flex flex-col gap-1 px-2 pb-3 pt-3"
-                >
-                  {navItems.map((item, index) => (
+                {/* Inner Box */}
+
+                <div className="mt-2 rounded-[22px] border border-white/10 bg-[#101d1b]/95 p-2 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+
+                  <motion.nav
+                    initial="hidden"
+                    animate="visible"
+                    className="flex flex-col gap-1"
+                  >
+                    {navItems.map((item, index) => (
+                      <motion.a
+                        key={item.name}
+                        href={item.href}
+                        onClick={() =>
+                          setMobileOpen(false)
+                        }
+                        initial={{
+                          opacity: 0,
+                          x: -15,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          x: 0,
+                        }}
+                        transition={{
+                          delay:
+                            0.05 + index * 0.055,
+                          duration: 0.28,
+                          ease: "easeOut",
+                        }}
+                        whileTap={{
+                          scale: 0.98,
+                        }}
+                        className="group flex items-center justify-between rounded-[15px] px-4 py-3.5 text-sm font-medium text-[var(--muted)] transition-all duration-300 hover:bg-white/5 hover:pl-5 hover:text-white"
+                      >
+                        <span>{item.name}</span>
+
+                        {item.dropdown && (
+                          <ChevronDown
+                            size={15}
+                            className="text-white/40 transition-transform duration-300 group-hover:translate-y-0.5"
+                          />
+                        )}
+                      </motion.a>
+                    ))}
+
+                    {/* Mobile CTA */}
+
                     <motion.a
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
+                      href="#contact"
+                      onClick={() =>
+                        setMobileOpen(false)
+                      }
                       initial={{
                         opacity: 0,
-                        x: -12,
+                        y: 12,
                       }}
                       animate={{
                         opacity: 1,
-                        x: 0,
+                        y: 0,
                       }}
                       transition={{
-                        delay: 0.05 + index * 0.045,
-                        duration: 0.25,
-                        ease: "easeOut",
+                        delay: 0.32,
+                        duration: 0.3,
                       }}
                       whileTap={{
                         scale: 0.98,
                       }}
-                      className="group flex items-center justify-between rounded-xl px-4 py-3.5 text-sm text-[var(--muted)] transition-all duration-300 hover:bg-white/5 hover:pl-5 hover:text-white"
+                      className="mt-2 flex items-center justify-center gap-2 rounded-[15px] bg-[var(--accent)] px-4 py-3.5 text-center text-sm font-medium text-[var(--bg)] shadow-[0_0_25px_rgba(234,251,123,0.10)] transition-all duration-300 hover:brightness-105"
                     >
-                      <span>{item.name}</span>
-
-                      {item.dropdown && (
-                        <ChevronDown
-                          size={15}
-                          className="text-white/40 transition-transform duration-300 group-hover:translate-y-0.5"
-                        />
-                      )}
+                      Book Your Trip
+                      <ArrowUpRight size={16} />
                     </motion.a>
-                  ))}
-
-                  {/* Mobile Book Button */}
-
-                  <motion.a
-                    href="#contact"
-                    onClick={() => setMobileOpen(false)}
-                    initial={{
-                      opacity: 0,
-                      y: 10,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    transition={{
-                      delay: 0.3,
-                      duration: 0.3,
-                    }}
-                    whileTap={{
-                      scale: 0.98,
-                    }}
-                    className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-3.5 text-center text-sm font-medium text-[var(--bg)] shadow-[0_0_25px_rgba(234,251,123,0.10)] transition-all duration-300 hover:brightness-105"
-                  >
-                    Book Your Trip
-                    <ArrowUpRight size={16} />
-                  </motion.a>
-                </motion.nav>
+                  </motion.nav>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -366,8 +408,6 @@ function Hero() {
         animate="visible"
         className="relative mx-auto flex min-h-[760px] max-w-[1450px] items-center justify-center overflow-hidden rounded-[28px]"
       >
-        {/* HERO IMAGE */}
-
         <img
           src={images.hero}
           alt="Private aircraft flying above clouds"
@@ -377,11 +417,15 @@ function Hero() {
         <div className="hero-overlay absolute inset-0" />
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
+
           <motion.div
             variants={heroItem}
             className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 backdrop-blur-md"
           >
-            <Sparkles size={14} className="text-[var(--accent)]" />
+            <Sparkles
+              size={14}
+              className="text-[var(--accent)]"
+            />
 
             <span className="text-xs tracking-[0.15em] text-white/80 uppercase">
               Private Aviation Reimagined
@@ -393,7 +437,9 @@ function Hero() {
             className="font-heading text-[clamp(3rem,7vw,6.8rem)] font-light leading-[0.95] tracking-[-0.04em] text-[var(--text)]"
           >
             The{" "}
-            <span className="text-[var(--accent)]">Exceptional</span>{" "}
+            <span className="text-[var(--accent)]">
+              Exceptional
+            </span>{" "}
             Way
             <br />
             to Travel.
@@ -428,8 +474,6 @@ function Hero() {
             </a>
           </motion.div>
         </div>
-
-        {/* Hero bottom information */}
 
         <div className="absolute bottom-6 left-6 right-6 z-10 hidden items-center justify-between md:flex">
           <div className="flex items-center gap-3 rounded-full border border-white/10 bg-black/20 px-4 py-2.5 backdrop-blur-md">
@@ -583,11 +627,11 @@ function FeatureCard({ feature, index }) {
       >
         <div
           className={`grid min-h-[560px] md:grid-cols-2 ${
-            feature.position === "left" ? "md:[direction:rtl]" : ""
+            feature.position === "left"
+              ? "md:[direction:rtl]"
+              : ""
           }`}
         >
-          {/* Content */}
-
           <div className="flex flex-col justify-center p-8 md:p-14 lg:p-20 md:[direction:ltr]">
             <div className="flex items-center justify-between">
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#3E5450] text-sm text-white">
@@ -625,13 +669,14 @@ function FeatureCard({ feature, index }) {
             </ul>
           </div>
 
-          {/* Image */}
-
           <div className="min-h-[350px] p-3 md:min-h-full md:[direction:ltr]">
             <div className="h-full min-h-[340px] overflow-hidden rounded-[18px]">
               <img
                 src={feature.image}
-                alt={`${feature.title.replace("\n", " ")} experience`}
+                alt={`${feature.title.replace(
+                  "\n",
+                  " "
+                )} experience`}
                 className="h-full w-full object-cover transition duration-700 hover:scale-105"
               />
             </div>
@@ -648,7 +693,10 @@ function FeatureCard({ feature, index }) {
 
 function Experiences() {
   return (
-    <section id="experiences" className="px-4 py-10 md:px-6 md:py-20">
+    <section
+      id="experiences"
+      className="px-4 py-10 md:px-6 md:py-20"
+    >
       <div className="mx-auto max-w-[1250px]">
         <motion.div
           variants={reveal}
@@ -720,8 +768,12 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative overflow-hidden px-6 py-32">
+    <section
+      id="how-it-works"
+      className="relative overflow-hidden px-6 py-32"
+    >
       <div className="mx-auto max-w-7xl">
+
         <motion.div
           variants={reveal}
           initial="hidden"
@@ -736,7 +788,9 @@ function HowItWorks() {
           <h2 className="font-heading mt-5 text-4xl font-light tracking-[-0.03em] md:text-6xl">
             From idea to
             <br />
-            <span className="text-[var(--accent)]">airborne.</span>
+            <span className="text-[var(--accent)]">
+              airborne.
+            </span>
           </h2>
 
           <p className="mt-6 text-sm leading-7 text-[var(--muted)] md:text-base">
@@ -744,8 +798,6 @@ function HowItWorks() {
             to the moment you arrive.
           </p>
         </motion.div>
-
-        {/* Flight path */}
 
         <div className="pointer-events-none absolute left-[5%] right-[5%] top-[51%] hidden lg:block">
           <svg
@@ -761,7 +813,9 @@ function HowItWorks() {
               className="flight-path"
             />
 
-            <g transform="translate(600 80) rotate(-15)">
+            <g
+              transform="translate(600 80) rotate(-15)"
+            >
               <path
                 d="M0 -7 L18 0 L0 7 L4 1 L-12 4 L-15 0 L-12 -4 L4 -1 Z"
                 fill="#EAFB7B"
@@ -780,7 +834,10 @@ function HowItWorks() {
                 variants={reveal}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
                 className="premium-card rounded-[22px] bg-[var(--surface)] p-7 md:min-h-[350px]"
               >
                 <div className="flex items-center justify-between">
@@ -813,19 +870,47 @@ function HowItWorks() {
 
 /* =========================================================
    COMPARISON
+   (Mobile fix: equal fixed column widths shared by every row,
+    smaller padding/text on mobile, text wraps inside its cell.
+    Desktop (md and up) is unchanged.)
 ========================================================= */
 
 function Comparison() {
   const rows = [
-    ["Departure flexibility", "Fixed schedules", "Fly when you choose"],
-    ["Airport access", "Major airports", "Private & convenient airports"],
-    ["Privacy", "Shared environment", "Entire aircraft is yours"],
-    ["Travel experience", "Standard", "Personalised"],
-    ["Journey support", "Limited", "Dedicated support"],
+    [
+      "Departure flexibility",
+      "Fixed schedules",
+      "Fly when you choose",
+    ],
+    [
+      "Airport access",
+      "Major airports",
+      "Private & convenient airports",
+    ],
+    [
+      "Privacy",
+      "Shared environment",
+      "Entire aircraft is yours",
+    ],
+    [
+      "Travel experience",
+      "Standard",
+      "Personalised",
+    ],
+    [
+      "Journey support",
+      "Limited",
+      "Dedicated support",
+    ],
   ];
 
+  // Same column template for header + every row so columns line up perfectly.
+  // minmax(0, ...) stops long text from stretching/cutting a column.
+  const gridCols =
+    "grid-cols-[minmax(0,0.9fr)_minmax(0,0.9fr)_minmax(0,1.2fr)] md:grid-cols-[1fr_1fr_1fr]";
+
   return (
-    <section id="benefits" className="px-6 py-28">
+    <section id="benefits" className="px-4 py-28 md:px-6">
       <motion.div
         variants={reveal}
         initial="hidden"
@@ -844,48 +929,47 @@ function Comparison() {
         </div>
 
         <div className="overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)]">
-          {/* Header */}
 
-          <div className="grid grid-cols-[1fr_1fr_1fr] border-b border-white/10">
-            <div className="p-5 text-sm text-[var(--muted)] md:p-7">
+          <div className={`grid ${gridCols} border-b border-white/10`}>
+            <div className="break-words p-3 text-xs leading-snug text-[var(--muted)] md:p-7 md:text-sm">
               Experience
             </div>
 
-            <div className="border-l border-white/10 p-5 text-sm text-[var(--muted)] md:p-7">
+            <div className="break-words border-l border-white/10 p-3 text-xs leading-snug text-[var(--muted)] md:p-7 md:text-sm">
               Traditional Travel
             </div>
 
-            <div className="border-l border-white/10 bg-[rgba(234,251,123,0.05)] p-5 text-sm font-medium text-[var(--accent)] md:p-7">
+            <div className="break-words border-l border-white/10 bg-[rgba(234,251,123,0.05)] p-3 text-xs font-medium leading-snug text-[var(--accent)] md:p-7 md:text-sm">
               Eagle Aviation
             </div>
           </div>
 
-          {/* Rows */}
-
           {rows.map((row, index) => (
             <div
               key={row[0]}
-              className={`grid grid-cols-[1fr_1fr_1fr] ${
+              className={`grid ${gridCols} ${
                 index !== rows.length - 1
                   ? "border-b border-white/10"
                   : ""
               }`}
             >
-              <div className="p-5 text-xs text-[var(--text)] md:p-7 md:text-sm">
+              <div className="break-words p-3 text-xs leading-snug text-[var(--text)] md:p-7 md:text-sm">
                 {row[0]}
               </div>
 
-              <div className="border-l border-white/10 p-5 text-xs text-[var(--muted)] md:p-7 md:text-sm">
+              <div className="break-words border-l border-white/10 p-3 text-xs leading-snug text-[var(--muted)] md:p-7 md:text-sm">
                 {row[1]}
               </div>
 
-              <div className="flex items-center gap-2 border-l border-white/10 bg-[rgba(234,251,123,0.03)] p-5 text-xs text-[var(--text)] md:p-7 md:text-sm">
+              <div className="flex items-start gap-1.5 border-l border-white/10 bg-[rgba(234,251,123,0.03)] p-3 text-xs leading-snug text-[var(--text)] md:items-center md:gap-2 md:p-7 md:text-sm">
                 <Check
-                  size={16}
-                  className="shrink-0 text-[var(--accent)]"
+                  size={14}
+                  className="mt-[1px] shrink-0 text-[var(--accent)] md:mt-0 md:h-4 md:w-4"
                 />
 
-                {row[2]}
+                <span className="min-w-0 break-words">
+                  {row[2]}
+                </span>
               </div>
             </div>
           ))}
@@ -896,7 +980,7 @@ function Comparison() {
 }
 
 /* =========================================================
-   BENEFITS / PRICING STYLE CARDS
+   BENEFITS
 ========================================================= */
 
 function Benefits() {
@@ -939,7 +1023,10 @@ function Benefits() {
                 className="premium-card rounded-[22px] bg-[var(--surface)] p-8"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#3E5450] text-[var(--accent)]">
-                  <Icon size={21} strokeWidth={1.5} />
+                  <Icon
+                    size={21}
+                    strokeWidth={1.5}
+                  />
                 </div>
 
                 <h3 className="font-heading mt-12 text-3xl font-light">
@@ -972,8 +1059,6 @@ function Testimonial() {
         viewport={{ once: true }}
         className="mx-auto grid max-w-7xl overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] md:grid-cols-2"
       >
-        {/* Video placeholder */}
-
         <div className="relative min-h-[400px] overflow-hidden">
           <img
             src={images.destination}
@@ -988,7 +1073,9 @@ function Testimonial() {
             className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)] shadow-[0_0_40px_rgba(234,251,123,0.25)] transition hover:scale-105"
             aria-label="Play testimonial video"
           >
-            <span className="ml-1 text-xl">▶</span>
+            <span className="ml-1 text-xl">
+              ▶
+            </span>
           </button>
 
           <span className="absolute bottom-6 left-6 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-xs text-white backdrop-blur-md">
@@ -999,7 +1086,11 @@ function Testimonial() {
         <div className="flex flex-col justify-center p-8 md:p-14 lg:p-20">
           <div className="flex gap-1 text-[var(--accent)]">
             {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} size={15} fill="currentColor" />
+              <Star
+                key={star}
+                size={15}
+                fill="currentColor"
+              />
             ))}
           </div>
 
@@ -1075,8 +1166,6 @@ function CTA() {
         viewport={{ once: true }}
         className="relative mx-auto max-w-6xl overflow-hidden rounded-[28px] bg-[var(--accent)] px-7 py-16 text-center md:px-12 md:py-24"
       >
-        {/* Decorative circles */}
-
         <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full border border-[#0F2421]/10" />
 
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-72 w-72 rounded-full border border-[#0F2421]/10" />
@@ -1135,7 +1224,10 @@ function Newsletter() {
           className="flex w-full max-w-md gap-2"
           onSubmit={(e) => e.preventDefault()}
         >
-          <label htmlFor="email" className="sr-only">
+          <label
+            htmlFor="email"
+            className="sr-only"
+          >
             Email address
           </label>
 
@@ -1167,7 +1259,12 @@ function Footer() {
   const columns = [
     {
       title: "Explore",
-      links: ["About", "Destinations", "Experiences", "How It Works"],
+      links: [
+        "About",
+        "Destinations",
+        "Experiences",
+        "How It Works",
+      ],
     },
 
     {
@@ -1194,17 +1291,23 @@ function Footer() {
   return (
     <footer className="border-t border-white/10 px-6 pb-8 pt-20">
       <div className="mx-auto max-w-7xl">
+
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          {/* Brand */}
 
           <div>
-            <a href="#" className="flex items-center gap-2.5">
+            <a
+              href="#"
+              className="flex items-center gap-2.5"
+            >
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--bg)]">
                 <PlaneTakeoff size={19} />
               </span>
 
               <span className="font-heading text-xl font-medium">
-                EAGLE<span className="text-[var(--accent)]">.</span>
+                EAGLE
+                <span className="text-[var(--accent)]">
+                  .
+                </span>
               </span>
             </a>
 
@@ -1247,14 +1350,22 @@ function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col justify-between gap-4 border-t border-white/10 pt-7 text-xs text-[var(--muted)] md:flex-row">
-          <p>© 2026 Eagle Aviation. All rights reserved.</p>
+          <p>
+            © 2026 Eagle Aviation. All rights reserved.
+          </p>
 
           <div className="flex gap-5">
-            <a href="#" className="hover:text-white">
+            <a
+              href="#"
+              className="hover:text-white"
+            >
               Privacy
             </a>
 
-            <a href="#" className="hover:text-white">
+            <a
+              href="#"
+              className="hover:text-white"
+            >
               Terms
             </a>
           </div>
