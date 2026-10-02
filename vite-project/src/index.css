@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Urbanist:wght@300;400;500&display=swap");
+@import "tailwindcss";
+
+/* =========================================================
+   EAGLE AVIATION - THEME VARIABLES
+   Change these values to re-theme the entire website.
+========================================================= */
+
+:root {
+  --bg: #0f2421;
+  --surface: #1a2e2b;
+  --surface-light: #213733;
+
+  --accent: #eafb7b;
+  --text: #f4f4ee;
+  --muted: #c5cfc8;
+
+  --nav-bg: rgba(215, 222, 212, 0.85);
+  --nav-text: #1f3a34;
+
+  --white: #ffffff;
+  --icon: #7fb5a4;
+
+  --border: rgba(140, 200, 180, 0.25);
+  --border-hover: rgba(234, 251, 123, 0.45);
+
+  --radius-lg: 24px;
+  --radius-md: 20px;
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Sora", sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.font-heading {
+  font-family: "Urbanist", sans-serif;
+}
+
+.font-body {
+  font-family: "Sora", sans-serif;
+}
+
+/* =========================================================
+   CUSTOM SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3e5450;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* =========================================================
+   GLASS EFFECT
+========================================================= */
+
+.glass {
+  background: rgba(26, 46, 43, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* =========================================================
+   HERO OVERLAY
+========================================================= */
+
+.hero-overlay {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 36, 33, 0.2) 0%,
+      rgba(15, 36, 33, 0.4) 40%,
+      rgba(15, 36, 33, 0.88) 100%
+    );
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.lime-button {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.lime-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(234, 251, 123, 0.4);
+}
+
+.white-button {
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.white-button:hover {
+  transform: translateY(-2px);
+  background: #e9eee9;
+}
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.premium-card {
+  border: 1px solid var(--border);
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow:
+    inset 0 0 50px rgba(127, 181, 164, 0.025),
+    0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+   FLIGHT PATH
+========================================================= */
+
+.flight-path {
+  stroke-dasharray: 10 12;
+  animation: flightPath 18s linear infinite;
+}
+
+@keyframes flightPath {
+  to {
+    stroke-dashoffset: -300;
+  }
+}
+
+/* =========================================================
+   CHAT BUTTON
+========================================================= */
+
+.chat-pulse {
+  animation: chatPulse 3s ease-in-out infinite;
+}
+
+@keyframes chatPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(234, 251, 123, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgba(234, 251, 123, 0);
+  }
+}
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================================
+   FOCUS STATES
+========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
